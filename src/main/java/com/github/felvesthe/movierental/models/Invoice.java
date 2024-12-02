@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class Invoice {
 
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String postalCode;
-    private String product;
-    private LocalDate localDate;
+    private final int id;
+    private final String firstName;
+    private final String lastName;
+    private final String postalCode;
+    private final String product;
+    private final LocalDate localDate;
 
     public static int currentId = 1;
 
