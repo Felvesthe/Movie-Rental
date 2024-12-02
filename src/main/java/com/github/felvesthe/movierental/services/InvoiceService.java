@@ -19,18 +19,27 @@ public class InvoiceService {
         System.out.println("\n----------------------------------\n");
         System.out.println("DANE DO FAKTURY");
 
-        String firstName = userInputHandler.getString("Imię: ");
-        String lastName = userInputHandler.getString("Nazwisko: ");
+        String firstName = "";
+        String lastName = "";
+
+        boolean isFirstNameValid = false;
+        boolean isLastNameValid = false;
+
+        while (!isFirstNameValid) {
+            firstName = userInputHandler.getString("Imię: ");
+            isFirstNameValid = InvoiceValidator.getInstance().validateLength("Imię", firstName, 3);
+        }
+
+        while (!isLastNameValid) {
+            lastName = userInputHandler.getString("Nazwisko: ");
+            isLastNameValid = InvoiceValidator.getInstance().validateLength("Nazwisko", lastName, 3);
+        }
+
         String postalCode = userInputHandler.getFormattedString(
                 "Kod pocztowy (format 00-000): ",
                 "Kod pocztowy musi być w formacie 00-000. Spróbuj ponownie.",
                 "\\d{2}-\\d{3}"
         );
-
-        boolean isFirstNameValid = InvoiceValidator.getInstance().validateLength("Imię", firstName);
-        boolean isLastNameValid = InvoiceValidator.getInstance().validateLength("Nazwisko", lastName);
-
-        if (!isFirstNameValid || !isLastNameValid) return createInvoice(movie);
 
         return Optional.of(new Invoice(firstName, lastName, postalCode, movie.getTitle()));
     }
@@ -60,9 +69,12 @@ public class InvoiceService {
             return instance;
         }
 
-        public boolean validateLength(String fieldName, String text) {
-            if (text.length() < 3) {
-                System.out.println("Wartość pola " + fieldName + " jest zbyt krótka!");
+        public boolean validateLength(String fieldName, String text, int minLength) {
+            if (text.length() < minLength) {
+                System.out.println(
+                        "Wartość pola " + fieldName + " jest zbyt krótka! (min: " + minLength + " znaków)" +
+                        "\nSpróbuj ponownie!"
+                );
                 return false;
             }
 
