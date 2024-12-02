@@ -13,24 +13,17 @@ public class MovieInMemoryRepository implements MovieRepository {
 
     @Override
     public Optional<Movie> findById(int id) {
-        for (Movie movie : movies) {
-            if (movie.getId() == id) {
-                return Optional.of(movie);
-            }
-        }
-
-        return Optional.empty();
+        return movies
+                .stream()
+                .filter(movie -> movie.getId() == id)
+                .findFirst();
     }
 
     @Override
     public boolean isExists(String title) {
-        for (Movie movie : movies) {
-            if (movie.getTitle().equals(title)) {
-                return true;
-            }
-        }
-
-        return false;
+        return movies
+                .stream()
+                .anyMatch(movie -> movie.getTitle().equals(title));
     }
 
     @Override

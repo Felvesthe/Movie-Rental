@@ -37,11 +37,9 @@ public class User {
     }
 
     public boolean hasMovie(Movie movie) {
-        for (RentedMovie rentedMovie : rentedMovies) {
-            if (rentedMovie.movie().equals(movie)) return true;
-        }
-
-        return false;
+        return rentedMovies
+                .stream()
+                .anyMatch(rentedMovie -> rentedMovie.movie().equals(movie));
     }
 
     public void addRentedMovie(RentedMovie rentedMovie) {
