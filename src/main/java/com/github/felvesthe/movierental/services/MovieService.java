@@ -1,7 +1,6 @@
 package com.github.felvesthe.movierental.services;
 
 import com.github.felvesthe.movierental.enums.AccessType;
-import com.github.felvesthe.movierental.models.Invoice;
 import com.github.felvesthe.movierental.models.Movie;
 import com.github.felvesthe.movierental.models.User;
 import com.github.felvesthe.movierental.records.RentedMovie;
