@@ -9,6 +9,6 @@ public interface MovieRepository {
 
     Optional<Movie> findById(int id);
     boolean isExists(String title);
-    Movie save(Movie movie);
+    void save(Movie movie);
     List<Movie> findAll();
 }

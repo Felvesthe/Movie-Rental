@@ -27,10 +27,8 @@ public class MovieInMemoryRepository implements MovieRepository {
     }
 
     @Override
-    public Movie save(Movie movie) {
+    public void save(Movie movie) {
         movies.add(movie);
-
-        return movie;
     }
 
     @Override
