@@ -17,7 +17,7 @@ public class BlikPaymentStrategy implements PaymentStrategy {
 
     @Override
     public boolean processPayment() {
-        String blikCode = userInputHandler.getFormattedString("Wprowadź 6-cyfrowy kod BLIK: ", "Błąd: Kod BLIK musi składać się z 6 cyfr!", "\\d{6}");
+        userInputHandler.getFormattedString("Wprowadź 6-cyfrowy kod BLIK: ", "Błąd: Kod BLIK musi składać się z 6 cyfr!", "\\d{6}");
 
         System.out.println("Kod BLIK zaakceptowany. Trwa przetwarzanie płatności...");
 
