@@ -15,8 +15,8 @@ public class Invoice {
 
     public Invoice(String firstName, String lastName, String postalCode, String product) {
         this.id = currentId++;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1).toLowerCase();
+        this.lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1).toLowerCase();
         this.postalCode = postalCode;
         this.product = product;
         this.localDate = LocalDate.now();
