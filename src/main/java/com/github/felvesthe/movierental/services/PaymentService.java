@@ -1,5 +1,6 @@
 package com.github.felvesthe.movierental.services;
 
+import com.github.felvesthe.movierental.enums.StatusCode;
 import com.github.felvesthe.movierental.models.Invoice;
 import com.github.felvesthe.movierental.models.Movie;
 import com.github.felvesthe.movierental.services.payments.BlikPaymentStrategy;
@@ -28,27 +29,32 @@ public class PaymentService {
         if (invoice.isEmpty()) {
             System.out.println("Wystąpił problem z danymi wprowadzonymi do faktury. Spróbuj ponownie później!");
             return false;
-        };
-
-        Optional<PaymentStrategy> paymentStrategy = choosePaymentStrategy();
-
-        if (paymentStrategy.isEmpty()) {
-            System.out.println("Nie wybrano poprawnej metody płatności.");
-            return false;
         }
 
-        boolean paymentStatus = paymentStrategy.get().processPayment();
+        StatusCode paymentStatus = null;
 
-        if (paymentStatus) {
+        while (paymentStatus == null || paymentStatus == StatusCode.NOT_IMPLEMENTED) {
+            Optional<PaymentStrategy> paymentStrategy = choosePaymentStrategy();
+
+            if (paymentStrategy.isEmpty()) {
+                System.out.println("Nie wybrano poprawnej metody płatności.");
+                return false;
+            }
+
+            paymentStatus = paymentStrategy.get().processPayment();
+        }
+
+        if (paymentStatus == StatusCode.SUCCESS) {
             invoiceService.sendInvoice(invoice.get());
         }
 
-        return paymentStatus;
+        return paymentStatus == StatusCode.SUCCESS;
     }
 
     public Optional<PaymentStrategy> choosePaymentStrategy() {
         int option = userInputHandler.getInteger(
-                "\nDostępne metody płatności:" +
+                "\n----------------------------------\n" +
+                        "\nDostępne metody płatności:" +
                         "\n-> 1. BLIK" +
                         "\n-> 2. Przelewy24 (niedostępny)" +
                         "\n\nJeśli chcesz anulować płatność, wybierz wartość \"0\"" +

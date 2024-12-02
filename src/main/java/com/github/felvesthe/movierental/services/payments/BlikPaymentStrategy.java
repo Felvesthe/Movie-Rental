@@ -1,5 +1,6 @@
 package com.github.felvesthe.movierental.services.payments;
 
+import com.github.felvesthe.movierental.enums.StatusCode;
 import com.github.felvesthe.movierental.utils.UserInputHandler;
 
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class BlikPaymentStrategy implements PaymentStrategy {
     }
 
     @Override
-    public boolean processPayment() {
+    public StatusCode processPayment() {
         userInputHandler.getFormattedString("Wprowadź 6-cyfrowy kod BLIK: ", "Błąd: Kod BLIK musi składać się z 6 cyfr!", "\\d{6}");
 
         System.out.println("Kod BLIK zaakceptowany. Trwa przetwarzanie płatności...");
@@ -24,10 +25,10 @@ public class BlikPaymentStrategy implements PaymentStrategy {
         boolean isConfirmed = simulateBlikPaymentConfirmation();
         if (isConfirmed) {
             System.out.println("\nPłatność zakończona sukcesem!");
-            return true;
+            return StatusCode.SUCCESS;
         } else {
             System.out.println("\nPłatność została odrzucona.");
-            return false;
+            return StatusCode.ERROR;
         }
     }
 
